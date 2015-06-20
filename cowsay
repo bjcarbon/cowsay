@@ -6,6 +6,9 @@
 ## This file is part of cowsay.  (c) 1999-2000 Tony Monroe.
 ##
 
+use open ':std' => ':locale';
+use Encode::Locale;
+use Encode;
 use Text::Tabs qw(expand);
 use Text::Wrap qw(wrap fill $columns);
 use File::Basename;
@@ -95,7 +98,7 @@ sub slurp_input {
 	chomp(@message = <STDIN>);
     } else {
 	&display_usage if $opts{'n'};
-	@message = join(' ', @ARGV);
+	@message = join(' ', map { decode(locale => $_, 1) } @ARGV);
     }
 }
 
